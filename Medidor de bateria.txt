@@ -1,0 +1,71 @@
+#include <LiquidCrystal.h>
+
+LiquidCrystal lcd(12,11,5,4,3,2);
+
+#define LEDVERDE 2
+#define LEDAMARILLO 3
+#define LEDROJO 4
+#define ANALOGPILA 0
+
+  int analogValor = 0;
+  float voltaje = 0;
+  int ledDelay = 800;
+  
+  float maximo = 1.7;
+  float medio = 1.5;
+  float minimo = 1.2;
+
+
+void setup()
+{
+  lcd.begin(16,2);
+  
+  Serial.begin(9600);
+  pinMode(LEDVERDE, OUTPUT);
+  pinMode(LEDAMARILLO, OUTPUT);
+  pinMode(LEDROJO, OUTPUT);
+  lcd.print("Prueba");
+}
+void loop()
+{
+  analogValor = analogRead(ANALOGPILA);
+  voltaje = 0.0048 * analogValor;
+  Serial.print("Voltaje: ");
+  Serial.println(voltaje);
+  
+   if (voltaje >= maximo)
+  {
+    digitalWrite(LEDVERDE, HIGH);
+    delay(ledDelay);
+    digitalWrite(LEDVERDE, LOW);
+     lcd.print("Maximo");
+  }
+  else if (voltaje < maximo && voltaje >= medio)
+  {
+    digitalWrite(LEDAMARILLO, HIGH);
+    delay(ledDelay);
+    digitalWrite(LEDAMARILLO, LOW);
+     lcd.print("Medio");
+  }
+  else if (voltaje < medio && voltaje >= minimo)
+  {
+    digitalWrite(LEDROJO, HIGH);
+    delay(ledDelay);
+    digitalWrite(LEDROJO, LOW);
+    delay(ledDelay);
+    lcd.print("Minimo");
+  }
+
+else if(voltaje<minimo)
+{
+	digitalWrite(LEDROJO, HIGH);
+    delay(ledDelay*0.5);
+    digitalWrite(LEDROJO, LOW);
+  	delay(ledDelay*0.5);
+    lcd.print("Demasiado bajo");
+}
+  	digitalWrite(LEDVERDE, LOW);
+	digitalWrite(LEDAMARILLO, LOW);
+	digitalWrite(LEDROJO, LOW);
+  
+}

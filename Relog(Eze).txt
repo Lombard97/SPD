@@ -1,0 +1,46 @@
+#include <LiquidCrystal.h>
+
+LiquidCrystal lcd(12,11,5,4,3,2);//defino los pines
+
+unsigned long aux=0,segs=0,mins=0,hors=0;
+unsigned long timpo = 0;
+unsigned int ms=0;
+
+void setup() {
+	lcd.begin(16,2);//inicializo mi display 
+}
+
+void loop() {
+	// put your main code here, to run repeatedly:
+    
+    lcd.clear();
+    aux=millis();
+    ms=aux%1000;  
+    aux/=1000;
+    segs=aux%60;
+    mins=(aux/60)%60;
+    hors=(aux/3600)%24;
+
+    if(hors<10)
+    	lcd.print("0");
+  	lcd.print(hors);
+  	lcd.print(":");
+
+  	if(mins<10)
+    	lcd.print("0");
+	lcd.print(mins);
+  	lcd.print(":");
+
+  	if(segs<10)
+    	lcd.print("0");
+  	lcd.print(segs);
+    lcd.print(".");
+
+    if(ms<100)
+      lcd.print("0");
+    if(ms<10)
+      lcd.print("0");
+    lcd.print(ms);
+
+    delay(1000);
+}
